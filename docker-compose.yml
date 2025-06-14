@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  spring-api-image:
+    image: spring-api-image
+    container_name: spring-api-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - spring-network
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+        - SPRING_DATA_MONGODB_URI=mongodb://root:root@mongodb:27017/tienda?authSource=admin
+
+  mongodb:
+    image: mongodb/mongodb-atlas-local
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=tienda
+    ports:
+      - "27017:27017"
+    networks:
+      - spring-network
+    volumes:
+      - data:/data/db
+      - config:/data/configdb
+    healthcheck:
+      test: ["CMD", "mongosh", "-u", "root", "-p", "root", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 30s
+      retries: 10
+networks:
+  spring-network:
+    driver: bridge
+
+volumes:
+  data:
+  config:
