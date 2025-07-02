@@ -1,0 +1,27 @@
+Para ejecutar tu proyecto en Docker, sigue estos pasos:
+
+
+Construye las imágenes y levanta los contenedores
+Desde la raíz del proyecto, ejecuta en la terminal:
+
+
+docker-compose up --build
+Verifica que ambos servicios estén corriendo
+
+
+La API Spring Boot estará disponible en: http://localhost:8080
+MongoDB estará corriendo en el puerto 27017.
+Detener los contenedores
+Para detener y eliminar los contenedores, usa:
+
+
+docker-compose down
+Notas:
+
+
+Asegúrate de tener Docker y Docker Compose instalados.
+El primer build puede demorar porque descarga dependencias y construye la imagen.
+Puedes ver logs en tiempo real con:
+docker-compose logs -f
+Si necesitas limpiar volúmenes de datos:
+docker-compose down -v
